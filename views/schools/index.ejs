@@ -1,0 +1,22 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schools</title>
+</head>
+
+<body>
+    <h1>All Schools</h1>
+    <ul>
+        <% for(let school of schools) { %>
+            <li>
+                <a href="/schools/<%= school._id %>">
+                    <%= school.title %>
+                </a>
+            </li>
+            <% } %>
+    </ul>
+</body>
+
+</html>
