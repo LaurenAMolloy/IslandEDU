@@ -24,6 +24,8 @@ app.set('view engine', 'ejs');
 //bullet proof path
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(express.urlencoded({ extended: true }))
+
 app.get("/", (res, req) => {
     res.render('home')
 })
@@ -34,6 +36,20 @@ app.get("/schools", async (req, res) => {
     res.render('schools/index', {schools})
 })
 
+//Create is two routes!
+//Why?
+//GET the form
+app.get('/schools/new', async(req, res) => {
+    res.render('schools/new')
+})
+
+//POST the data
+app.post('/schools', async(req, res) => {
+    const school = new School(req.body.school)
+    await school.save()
+    res.redirect(`/schools/${school._id}`)
+})
+
 //GET school by id
 app.get('/schools/:id', async(req, res) => {
     const { id } = req.params
@@ -41,7 +57,6 @@ app.get('/schools/:id', async(req, res) => {
     res.render('schools/show', { school })  
 })
 
-//Create is two routes!
 
 
 app.listen(8000, ()=> {
