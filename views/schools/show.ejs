@@ -15,7 +15,15 @@
         <%= school.location %>
     </h2>
     <footer>
-        <a href="/schools">All Schools</a>
+        <form action="/schools/<%=school._id%>?_method=Delete" method="POST">
+            <button>Delete</button>
+        </form>
+        <p>
+            <a href="/schools">All Schools</a>
+        </p>
+        <p>
+            <a href="/schools/<%=school._id%>/edit">Edit School</a>
+        </p>
     </footer>
 </body>
 

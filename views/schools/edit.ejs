@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit School</title>
+</head>
+
+<body>
+    <h1>Edit School</h1>
+    <form action="/schools/<%=school._id%>?_method=PUT" method="POST" class="new-school-form">
+        <div class="field">
+            <label for="title">Title</label>
+            <input value="<%=school.title%>" type="text" id="title" name="school[title]">
+        </div>
+        <div class="field">
+            <label for="location">Location</label>
+            <input value="<%=school.location%>" type="text" id="location" name="school[location]">
+        </div>
+        <button>Save School</button>
+        <p>
+            <a href="/schools/<%= school._id%>">Back to School</a>
+        </p>
+    </form>
+</body>
+
+</html>
