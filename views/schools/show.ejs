@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('/layouts/boilerplate')%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
-</head>
-
-<body>
-    <h1>
-        <%= school.title %>
-    </h1>
-    <h2>
-        <%= school.location %>
-    </h2>
-    <footer>
-        <form action="/schools/<%=school._id%>?_method=Delete" method="POST">
-            <button>Delete</button>
-        </form>
-        <p>
-            <a href="/schools">All Schools</a>
-        </p>
-        <p>
-            <a href="/schools/<%=school._id%>/edit">Edit School</a>
-        </p>
-    </footer>
-</body>
-
-</html>
+    <body>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="card mb-3">
+                    <img src="<%-school.image %>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><%-school.title %></h5>
+                        <p class="card-text"><%-school.description %></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted"><%-school.location %></li>
+                        <li class="list-group-item"><%-school.price %>/year</li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="card-link btn btn-info" href="/schools/<%=school._id%>/edit">Edit School</a>
+                        <form class="d-inline" action="/schools/<%=school._id%>?_method=Delete" method="POST">
+                            <button class=" btn btn-danger">Delete</button>
+                        </form>
+                        <a class="btn btn-primary" href="/schools">All Schools</a>
+                    </div>
+                </div>
+            </div>
+        </div>

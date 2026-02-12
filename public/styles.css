@@ -1,0 +1,46 @@
+:root {
+
+    /* Brand Core */
+    --brand-dark: #444154;
+    --brand-muted: #7A637F;
+
+    --brand-primary: #FF7062;
+    --brand-primary-hover: #FC8B79;
+
+    --brand-light: #FEC9C1;
+
+    /* Bootstrap Overrides */
+    --bs-primary: var(--brand-primary);
+    --bs-primary-rgb: 255, 112, 98;
+
+    --bs-body-bg: #FFF8F7;
+    /* very subtle warm background */
+    --bs-body-color: var(--brand-dark);
+
+    --bs-border-radius: 1rem;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--brand-primary);
+    --bs-btn-border-color: var(--brand-primary);
+    --bs-btn-hover-bg: var(--brand-primary-hover);
+    --bs-btn-hover-border-color: var(--brand-primary-hover);
+    --bs-btn-active-bg: var(--brand-primary-hover);
+    --bs-btn-active-border-color: var(--brand-primary-hover);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: var(--brand-dark);
+}
+
+.text-muted {
+    color: var(--brand-muted) !important;
+}
+
+.bg-soft {
+    background-color: var(--brand-light);
+}

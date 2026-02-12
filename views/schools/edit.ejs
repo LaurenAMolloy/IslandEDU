@@ -1,28 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate')%>
+    <div class="row">
+        <h1 class="text-center">Edit School</h1>
+        <div class="col-6 offset-3">
+            <form action="/schools/<%=school._id%>?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="school[title]" value="<%=school.title %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" id="location" name="school[location]"
+                        value="<%=school.location %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image Url</label>
+                    <input class="form-control" type="text" id="image" name="school[image]" value="<%=school.image %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="price">School Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="price-label">$</span>
+                        <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
+                            aria-describedby="price-label" name="school[price]" value="<%=school.price %>">
+                    </div>
+                </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit School</title>
-</head>
-
-<body>
-    <h1>Edit School</h1>
-    <form action="/schools/<%=school._id%>?_method=PUT" method="POST" class="new-school-form">
-        <div class="field">
-            <label for="title">Title</label>
-            <input value="<%=school.title%>" type="text" id="title" name="school[title]">
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description"
+                        name="school[description]"><%= school.description%></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Update Campground</button>
+                </div>
+            </form>
+            <a href="/schools/<%= school._id%>">Back To School</a>
         </div>
-        <div class="field">
-            <label for="location">Location</label>
-            <input value="<%=school.location%>" type="text" id="location" name="school[location]">
-        </div>
-        <button>Save School</button>
-        <p>
-            <a href="/schools/<%= school._id%>">Back to School</a>
-        </p>
-    </form>
-</body>
-
-</html>
+    </div>
