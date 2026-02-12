@@ -31,14 +31,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'))
 
-app.get("/", (res, req) => {
+app.get("/", (req, res) => {
     res.render('home')
 })
 
+//view by location
+///schools?location=limassol
+
 //GET all schools
 app.get("/schools", async (req, res) => {
-    const schools = await School.find({})
-    res.render('schools/index', {schools})
+    const { location } = req.query
+    if(location){
+        const schools = await School.find({ location })
+        res.render('schools/index', {schools, location})
+    } else {
+        const schools = await School.find({})
+        res.render('schools/index', {schools, location: "All"})
+    }   
 })
 
 //Create is two routes!

@@ -2,7 +2,7 @@
 
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="fw-bold">All Schools</h1>
+            <h1 class="fw-bold">All Schools: <%- location%></h1>
             <a href="/schools/new" class="btn btn-primary">+ Add School</a>
         </div>
 
@@ -28,7 +28,7 @@
                             </p>
 
                             <p class="text-muted small mb-3">
-                                <span style="color:#FF6B6B;">
+                                <span style="color:#212529;">
                                     📍 <%= school.location %>
                                 </span>
                             </p>
@@ -36,6 +36,9 @@
                             <a href="/schools/<%= school._id %>" class="btn btn-primary mt-auto">
                                 View School
                             </a>
+                            <%if(location !=="All" ){%>
+                                <a href="/schools">All Schools</a>
+                                <% } %>
                         </div>
 
                     </div>

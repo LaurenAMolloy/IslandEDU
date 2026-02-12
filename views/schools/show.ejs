@@ -10,15 +10,17 @@
                         <p class="card-text"><%-school.description %></p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted"><%-school.location %></li>
-                        <li class="list-group-item"><%-school.price %>/year</li>
+                        <li class="list-group-item">Location:
+                            <a href="/schools?location=<%-school.location %>"><%-school.location %></a>
+                        </li>
+                        <li class="list-group-item">Price:<%-school.price %>/year</li>
                     </ul>
                     <div class="card-body">
                         <a class="card-link btn btn-info" href="/schools/<%=school._id%>/edit">Edit School</a>
                         <form class="d-inline" action="/schools/<%=school._id%>?_method=Delete" method="POST">
                             <button class=" btn btn-danger">Delete</button>
                         </form>
-                        <a class="btn btn-primary" href="/schools">All Schools</a>
+                        <a href="/schools">Back To All Schools</a>
                     </div>
                 </div>
             </div>

@@ -1,46 +1,92 @@
 :root {
+    --jet-black: #2d3142ff;
+    --silver: #bfc0c0ff;
+    --white: #ffffffff;
+    --coral-glow: #ef8354ff;
+    --blue-slate: #4f5d75ff;
 
-    /* Brand Core */
-    --brand-dark: #444154;
-    --brand-muted: #7A637F;
+    /* Bootstrap overrides */
+    --bs-body-bg: var(--white);
+    --bs-body-color: var(--jet-black);
 
-    --brand-primary: #FF7062;
-    --brand-primary-hover: #FC8B79;
+    --bs-primary: var(--coral-glow);
+    --bs-secondary: var(--blue-slate);
+    --bs-success: var(--blue-slate);
+    --bs-warning: var(--coral-glow);
 
-    --brand-light: #FEC9C1;
+    --bs-link-color: var(--coral-glow);
+    --bs-link-hover-color: #d96f3f;
+}
 
-    /* Bootstrap Overrides */
-    --bs-primary: var(--brand-primary);
-    --bs-primary-rgb: 255, 112, 98;
+body {
+    background-color: var(--white);
+    color: var(--jet-black);
+    font-family: "SN Pro", sans-serif;
+}
 
-    --bs-body-bg: #FFF8F7;
-    /* very subtle warm background */
-    --bs-body-color: var(--brand-dark);
+.navbar {
+    background-color: var(--blue-slate);
+}
 
-    --bs-border-radius: 1rem;
+.fa-school {
+    color: var(--white);
+    width: 50px;
+    height: 50px;
 }
 
 .btn-primary {
-    --bs-btn-bg: var(--brand-primary);
-    --bs-btn-border-color: var(--brand-primary);
-    --bs-btn-hover-bg: var(--brand-primary-hover);
-    --bs-btn-hover-border-color: var(--brand-primary-hover);
-    --bs-btn-active-bg: var(--brand-primary-hover);
-    --bs-btn-active-border-color: var(--brand-primary-hover);
+    --bs-btn-bg: var(--coral-glow);
+    --bs-btn-border-color: var(--coral-glow);
+    --bs-btn-color: var(--white);
+
+    --bs-btn-hover-bg: #d96f3f;
+    --bs-btn-hover-border-color: #d96f3f;
+
+    --bs-btn-active-bg: #bf5f35;
+    --bs-btn-active-border-color: #bf5f35;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-    color: var(--brand-dark);
+.btn-secondary {
+    background-color: var(--blue-slate);
+    border-color: var(--blue-slate);
+    color: var(--white);
 }
 
-.text-muted {
-    color: var(--brand-muted) !important;
+.btn-secondary:hover {
+    background-color: #445066;
+    border-color: #445066;
 }
 
-.bg-soft {
-    background-color: var(--brand-light);
+.btn-secondary:active {
+    background-color: #3a4458;
+    border-color: #3a4458;
+}
+
+.btn-outline-primary {
+    color: var(--coral-glow);
+    border-color: var(--coral-glow);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--coral-glow);
+    color: var(--white);
+}
+
+.btn-outline-secondary {
+    color: var(--blue-slate);
+    border-color: var(--blue-slate);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--blue-slate);
+    color: var(--white);
+}
+
+a {
+    color: var(--coral-glow);
+    transition: 0.2s ease;
+}
+
+a:hover {
+    color: #d96f3f;
 }
