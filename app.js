@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path')
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const methodOverride = require('method-override')
-const School = require('./models/school')
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError')
+const methodOverride = require('method-override');
+const School = require('./models/school');
 
 //Connect to Mongo
 mongoose.connect('mongodb://localhost:27017/island-edu');
@@ -33,9 +35,8 @@ app.get("/", (req, res) => {
 
 //view by location
 ///schools?location=limassol
-
 //GET all schools
-app.get("/schools", async (req, res) => {
+app.get("/schools", catchAsync(async (req, res) => {
     const { location } = req.query
     if(location){
         const schools = await School.find({ location })
@@ -44,47 +45,60 @@ app.get("/schools", async (req, res) => {
         const schools = await School.find({})
         res.render('schools/index', {schools, location: "All"})
     }   
-})
+}))
 
 //Create is two routes!
 //Why?
 //GET the form
-app.get('/schools/new', async(req, res) => {
+app.get('/schools/new', catchAsync(async(req, res) => {
     res.render('schools/new')
-})
+}))
 
 //POST the data
-app.post('/schools', async(req, res) => {
-    console.log(req.body)
-    const school = new School(req.body.school)
-    await school.save()
-    res.redirect(`/schools/${school._id}`)
-})
+//Add the catch Async function
+app.post('/schools', catchAsync(async(req, res) => {
+    if(!req.body.campground) throw new ExpressError('Invalid Data', 400)
+    const school = new School(req.body.school);
+    await school.save();
+    res.redirect(`/schools/${school._id}`);  
+}))
 
 //GET school by id
-app.get('/schools/:id', async(req, res) => {
+app.get('/schools/:id', catchAsync(async(req, res) => {
     const { id } = req.params
     const school = await School.findById(id)
     res.render('schools/show', { school })  
-})
+}))
 
 //Update School by ID
-app.get('/schools/:id/edit', async(req, res) => {
+app.get('/schools/:id/edit', catchAsync(async(req, res) => {
     const { id } = req.params
     const school = await School.findById(id)
     res.render('schools/edit', { school })
-});
+}));
 
-app.put('/schools/:id', async(req, res) => {
+app.put('/schools/:id', catchAsync(async(req, res) => {
    const { id } = req.params;
    const school = await School.findByIdAndUpdate(id, { ...req.body.school })
    res.redirect(`/schools/${school._id}`)
-})
+}))
 
-app.delete('/schools/:id', async(req, res) => {
+app.delete('/schools/:id', catchAsync(async(req, res) => {
     const { id } = req.params;
     const school = await School.findByIdAndDelete(id);
     res.redirect('/schools')
+}));
+
+//This is a catch all route
+app.all(/(.*)/, (req, res, next) => {
+    console.log('404')
+    next(new ExpressError('Page Not Found', 404))
+})
+
+app.use((err, req, res, next ) => {
+    const { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).send(message);
+    //res.send("Oh boy something went wrong!")
 })
 
 app.listen(8000, ()=> {
