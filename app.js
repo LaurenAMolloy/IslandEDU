@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const { schoolSchema } = require('./schemas.js')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override');
@@ -27,7 +28,19 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+const validateSchool = (req, res, next) => {
+    
+    const { error } = schoolSchema.validate(req.body);
+
+    if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
 
 app.get("/", (req, res) => {
     res.render('home')
@@ -37,27 +50,27 @@ app.get("/", (req, res) => {
 ///schools?location=limassol
 //GET all schools
 app.get("/schools", catchAsync(async (req, res) => {
-    const { location } = req.query
-    if(location){
-        const schools = await School.find({ location })
-        res.render('schools/index', {schools, location})
-    } else {
+    // const { location } = req.query
+    // if(location){
+    //     const schools = await School.find({ location })
+    //     res.render('schools/index', {schools, location})
+    // } else {
+        console.log("Schools route hit");
         const schools = await School.find({})
         res.render('schools/index', {schools, location: "All"})
-    }   
-}))
+    }))
 
 //Create is two routes!
 //Why?
 //GET the form
-app.get('/schools/new', catchAsync(async(req, res) => {
+app.get('/schools/new',async(req, res) => {
     res.render('schools/new')
-}))
+})
 
 //POST the data
 //Add the catch Async function
-app.post('/schools', catchAsync(async(req, res) => {
-    if(!req.body.campground) throw new ExpressError('Invalid Data', 400)
+app.post('/schools', validateSchool, catchAsync(async(req, res, next) => {
+    // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
     const school = new School(req.body.school);
     await school.save();
     res.redirect(`/schools/${school._id}`);  
@@ -77,7 +90,7 @@ app.get('/schools/:id/edit', catchAsync(async(req, res) => {
     res.render('schools/edit', { school })
 }));
 
-app.put('/schools/:id', catchAsync(async(req, res) => {
+app.put('/schools/:id', validateSchool, catchAsync(async(req, res) => {
    const { id } = req.params;
    const school = await School.findByIdAndUpdate(id, { ...req.body.school })
    res.redirect(`/schools/${school._id}`)
@@ -92,12 +105,15 @@ app.delete('/schools/:id', catchAsync(async(req, res) => {
 //This is a catch all route
 app.all(/(.*)/, (req, res, next) => {
     console.log('404')
+    //This will trigger an error in the route!
     next(new ExpressError('Page Not Found', 404))
 })
 
+//I only run when there is an error!
 app.use((err, req, res, next ) => {
-    const { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).send(message);
+    const { statusCode = 500 } = err;
+    if(!err.message) err.message = "Oh No, Something Went Wrong!"
+    res.status(statusCode).render('error', { err });
     //res.send("Oh boy something went wrong!")
 })
 
