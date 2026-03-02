@@ -2,38 +2,79 @@
     <div class="row">
         <h1 class="text-center">Edit School</h1>
         <div class="col-6 offset-3">
-            <form action="/schools/<%=school._id%>?_method=PUT" method="POST">
+            <form action="/schools/<%=school._id%>?_method=PUT" method="POST" class="validated-form" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" id="title" name="school[title]" value="<%=school.title %>">
+                    <input class="form-control" type="text" id="title" name="school[title]" value="<%=school.title %>"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="school[location]"
-                        value="<%=school.location %>">
+                        value="<%=school.location %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" id="image" name="school[image]" value="<%=school.image %>">
+                    <input class="form-control" type="text" id="image" name="school[image]" value="<%=school.image %>"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="price">School Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
-                            aria-describedby="price-label" name="school[price]" value="<%=school.price %>">
+                            aria-describedby="price-label" name="school[price]" value="<%=school.price %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description"
-                        name="school[description]"><%= school.description%></textarea>
+                    <textarea class="form-control" type="text" id="description" name="school[description]"
+                        required><%= school.description%></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-info">Update Campground</button>
+                    <button class="btn btn-info">Update School</button>
                 </div>
             </form>
             <a href="/schools/<%= school._id%>">Back To School</a>
         </div>
     </div>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            console.log("script running")
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.validated-form')
+
+            // Loop over them and prevent submission
+            Array.from(forms)
+                .forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+    </script>

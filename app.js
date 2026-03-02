@@ -6,11 +6,7 @@ const methodOverride = require('method-override')
 const School = require('./models/school')
 
 //Connect to Mongo
-mongoose.connect('mongodb://localhost:27017/island-edu', {
-    //useNewUrlParser: true,
-    //useCreateIndex: true,
-    //useUnifiedTopology: true
-});
+mongoose.connect('mongodb://localhost:27017/island-edu');
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -59,6 +55,7 @@ app.get('/schools/new', async(req, res) => {
 
 //POST the data
 app.post('/schools', async(req, res) => {
+    console.log(req.body)
     const school = new School(req.body.school)
     await school.save()
     res.redirect(`/schools/${school._id}`)
