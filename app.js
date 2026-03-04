@@ -104,7 +104,7 @@ app.delete('/schools/:id', catchAsync(async(req, res) => {
 
 //This is a catch all route
 app.all(/(.*)/, (req, res, next) => {
-    console.log('404')
+    console.log('404', req.originalUrl)
     //This will trigger an error in the route!
     next(new ExpressError('Page Not Found', 404))
 })

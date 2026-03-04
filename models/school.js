@@ -9,6 +9,12 @@ const SchoolSchema = new Schema({
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],
     // curriculum, enum: ["British", "IB","American", "Waldorf", "Montessori"]
-})
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ]
+});
 
 module.exports = mongoose.model('School', SchoolSchema);
