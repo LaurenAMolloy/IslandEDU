@@ -2,11 +2,14 @@ const express = require('express');
 const path = require('path')
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { schoolSchema } = require('./schemas.js')
+const { schoolSchema } = require('./schemas.js');
+const { reviewSchema } = require('./schemas.js')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override');
 const School = require('./models/school');
+const Review = require('./models/review');
+const school = require('./models/school');
 
 //Connect to Mongo
 mongoose.connect('mongodb://localhost:27017/island-edu');
@@ -35,6 +38,18 @@ const validateSchool = (req, res, next) => {
     const { error } = schoolSchema.validate(req.body);
 
     if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+//Todo redirect the the form and show errors
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+
+     if(error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
     } else {
@@ -79,7 +94,8 @@ app.post('/schools', validateSchool, catchAsync(async(req, res, next) => {
 //GET school by id
 app.get('/schools/:id', catchAsync(async(req, res) => {
     const { id } = req.params
-    const school = await School.findById(id)
+    const school = await School.findById(id).populate('reviews')
+    console.log(school)
     res.render('schools/show', { school })  
 }))
 
@@ -101,6 +117,30 @@ app.delete('/schools/:id', catchAsync(async(req, res) => {
     const school = await School.findByIdAndDelete(id);
     res.redirect('/schools')
 }));
+
+//Reviews
+// POST /schools/:id/reviews
+app.post('/schools/:id/reviews', validateReview, catchAsync(async(req, res) => {
+    const school = await School.findById(req.params.id);
+
+    const review = new Review(req.body.review);
+    review.school = school._id;
+
+    school.reviews.push(review);
+    //Series not parallel
+    await review.save();
+    await school.save();
+    res.redirect(`/schools/${school._id}`)
+}))
+
+app.delete('/schools/:id/reviews/:reviewId', catchAsync(async( req, res) => {
+    const { id, reviewId } = req.params
+    await School.findByIdAndUpdate(id, {$pull: { review: reviewId } });
+    //find the 1 review 
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/schools/${id}`)
+})) 
 
 //This is a catch all route
 app.all(/(.*)/, (req, res, next) => {
