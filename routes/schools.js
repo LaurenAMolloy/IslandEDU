@@ -37,6 +37,7 @@ router.post('/', validateSchool, catchAsync(async(req, res, next) => {
     // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
     const school = new School(req.body.school);
     await school.save();
+    req.flash('success', 'Successfully made a new school');
     res.redirect(`/schools/${school._id}`);  
 }))
 
