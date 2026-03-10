@@ -9,7 +9,9 @@ const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override');
 const School = require('./models/school');
 const Review = require('./models/review');
-const school = require('./models/school');
+
+const schools = require('./routes/schools.js');
+const review = require('./routes/reviews.js')
 
 //Connect to Mongo
 mongoose.connect('mongodb://localhost:27017/island-edu');
@@ -33,114 +35,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
-const validateSchool = (req, res, next) => {
-    
-    const { error } = schoolSchema.validate(req.body);
+app.use('/schools', schools );
+app.use('/schools/:id/reviews', review);
 
-    if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
-
-//Todo redirect the the form and show errors
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-
-     if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
-
-app.get("/", (req, res) => {
-    res.render('home')
-})
-
-//view by location
-///schools?location=limassol
-//GET all schools
-app.get("/schools", catchAsync(async (req, res) => {
-    // const { location } = req.query
-    // if(location){
-    //     const schools = await School.find({ location })
-    //     res.render('schools/index', {schools, location})
-    // } else {
-        console.log("Schools route hit");
-        const schools = await School.find({})
-        res.render('schools/index', {schools, location: "All"})
-    }))
-
-//Create is two routes!
-//Why?
-//GET the form
-app.get('/schools/new',async(req, res) => {
-    res.render('schools/new')
-})
-
-//POST the data
-//Add the catch Async function
-app.post('/schools', validateSchool, catchAsync(async(req, res, next) => {
-    // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
-    const school = new School(req.body.school);
-    await school.save();
-    res.redirect(`/schools/${school._id}`);  
-}))
-
-//GET school by id
-app.get('/schools/:id', catchAsync(async(req, res) => {
-    const { id } = req.params
-    const school = await School.findById(id).populate('reviews')
-    console.log(school)
-    res.render('schools/show', { school })  
-}))
-
-//Update School by ID
-app.get('/schools/:id/edit', catchAsync(async(req, res) => {
-    const { id } = req.params
-    const school = await School.findById(id)
-    res.render('schools/edit', { school })
-}));
-
-app.put('/schools/:id', validateSchool, catchAsync(async(req, res) => {
-   const { id } = req.params;
-   const school = await School.findByIdAndUpdate(id, { ...req.body.school })
-   res.redirect(`/schools/${school._id}`)
-}))
-
-app.delete('/schools/:id', catchAsync(async(req, res) => {
-    const { id } = req.params;
-    const school = await School.findByIdAndDelete(id);
-    res.redirect('/schools')
-}));
-
-//Reviews
-// POST /schools/:id/reviews
-app.post('/schools/:id/reviews', validateReview, catchAsync(async(req, res) => {
-    const school = await School.findById(req.params.id);
-
-    const review = new Review(req.body.review);
-    review.school = school._id;
-
-    school.reviews.push(review);
-    //Series not parallel
-    await review.save();
-    await school.save();
-    res.redirect(`/schools/${school._id}`)
-}))
-
-app.delete('/schools/:id/reviews/:reviewId', catchAsync(async( req, res) => {
-    const { id, reviewId } = req.params
-    await School.findByIdAndUpdate(id, {$pull: { review: reviewId } });
-    //find the 1 review 
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/schools/${id}`)
-})) 
+// app.get("/", (req, res) => {
+//     res.render('home')
+// });
 
 //This is a catch all route
 app.all(/(.*)/, (req, res, next) => {
