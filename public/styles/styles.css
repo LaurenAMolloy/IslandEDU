@@ -1,38 +1,61 @@
 :root {
-    --jet-black: #2d3142ff;
-    --silver: #bfc0c0ff;
-    --white: #ffffffff;
-    --coral-glow: #ef8354ff;
-    --blue-slate: #4f5d75ff;
 
-    /* Bootstrap overrides */
+    /* Brand Colors */
+    --amber-glow: #ff9f1c;
+    --honey-bronze: #ffbf69;
+    --frozen-water: #cbf3f0;
+    --light-sea-green: #2ec4b6;
+
+    --jet-black: #2d3142;
+    --silver: #bfc0c0;
+    --white: #ffffff;
+    --coral-glow: #ef8354;
+    --blue-slate: #4f5d75;
+
+    /* Bootstrap Overrides */
     --bs-body-bg: var(--white);
     --bs-body-color: var(--jet-black);
 
     --bs-primary: var(--coral-glow);
     --bs-secondary: var(--blue-slate);
-    --bs-success: var(--blue-slate);
-    --bs-warning: var(--coral-glow);
+    --bs-success: var(--light-sea-green);
+    --bs-warning: var(--amber-glow);
 
     --bs-link-color: var(--coral-glow);
     --bs-link-hover-color: #d96f3f;
 }
 
+/* Body */
+
 body {
-    background-color: var(--white);
-    color: var(--jet-black);
+    background: whitesmoke;
+    color: var(--blue-slate);
     font-family: "SN Pro", sans-serif;
 }
+
+/* Navbar */
 
 .navbar {
     background-color: var(--blue-slate);
 }
+
+.footer {
+    background-color: var(--blue-slate);
+}
+
+/* School icon */
 
 .fa-school {
     color: var(--white);
     width: 50px;
     height: 50px;
 }
+
+.hero h1 {
+    color: var(--jet-black);
+}
+
+/* Primary Buttons */
 
 .btn-primary {
     --bs-btn-bg: var(--coral-glow);
@@ -45,6 +68,8 @@ body {
     --bs-btn-active-bg: #bf5f35;
     --bs-btn-active-border-color: #bf5f35;
 }
+
+/* Secondary Buttons */
 
 .btn-secondary {
     background-color: var(--blue-slate);
@@ -61,6 +86,8 @@ body {
     background-color: #3a4458;
     border-color: #3a4458;
 }
+
+/* Outline Buttons */
 
 .btn-outline-primary {
     color: var(--coral-glow);
@@ -81,6 +108,8 @@ body {
     background-color: var(--blue-slate);
     color: var(--white);
 }
+
+/* Links */
 
 a {
     color: var(--coral-glow);

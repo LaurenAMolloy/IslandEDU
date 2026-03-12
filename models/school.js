@@ -24,7 +24,7 @@ const SchoolSchema = new Schema({
 SchoolSchema.post('findOneAndDelete', async function(doc) {
     console.log("DELETED")
     if(doc){
-        await Review.remove({
+        await Review.deleteMany({
             _id: {
                 $in: doc.reviews
             }

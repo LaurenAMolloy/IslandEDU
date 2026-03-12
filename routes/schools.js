@@ -45,7 +45,10 @@ router.post('/', validateSchool, catchAsync(async(req, res, next) => {
 router.get('/:id', catchAsync(async(req, res) => {
     const { id } = req.params
     const school = await School.findById(id).populate('reviews')
-    console.log(school)
+    if(!school) {
+        req.flash('error', 'Cannot find that school!' );
+        return res.redirect('/schools');
+    }
     res.render('schools/show', { school })  
 }))
 
@@ -59,6 +62,7 @@ router.get('/:id/edit', catchAsync(async(req, res) => {
 router.put('/:id', validateSchool, catchAsync(async(req, res) => {
    const { id } = req.params;
    const school = await School.findByIdAndUpdate(id, { ...req.body.school })
+   req.flash('success', 'Successfully updated school');
    res.redirect(`/schools/${school._id}`)
 }))
 
