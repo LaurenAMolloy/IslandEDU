@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { schoolSchema } = require('../schemas');
 const ExpressError = require('../utils/ExpressError');
 const School = require('../models/school');
+const { isLoggedIn } = require('../middleware')
 
 const validateSchool = (req, res, next) => {
     
@@ -27,13 +28,15 @@ router.get("/", catchAsync(async (req, res) => {
 //Create is two routes!
 //Why?
 //GET the form
-router.get('/new',async(req, res) => {
+console.log(typeof isLoggedIn)
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('schools/new')
 })
 
 //POST the data
 //Add the catch Async function
-router.post('/', validateSchool, catchAsync(async(req, res, next) => {
+//User now has to be loggedin to access the create school
+router.post('/', isLoggedIn, validateSchool, catchAsync(async(req, res, next) => {
     // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
     const school = new School(req.body.school);
     await school.save();
@@ -53,13 +56,16 @@ router.get('/:id', catchAsync(async(req, res) => {
 }))
 
 //Update School by ID
-router.get('/:id/edit', catchAsync(async(req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params
     const school = await School.findById(id)
+    if(!school){
+        req.flash('error', 'Cannot find that campground!')
+    }
     res.render('schools/edit', { school })
 }));
 
-router.put('/:id', validateSchool, catchAsync(async(req, res) => {
+router.put('/:id', isLoggedIn, validateSchool, catchAsync(async(req, res) => {
    const { id } = req.params;
    const school = await School.findByIdAndUpdate(id, { ...req.body.school })
    req.flash('success', 'Successfully updated school');
