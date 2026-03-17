@@ -11,6 +11,10 @@ const SchoolSchema = new Schema({
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],
     // curriculum, enum: ["British", "IB","American", "Waldorf", "Montessori"]
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

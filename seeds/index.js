@@ -19,25 +19,19 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 function getRandom(min, max) {
-    //get random number
-    const rand = Math.random();
-    //find diff
-    const diff = max - min;
-    //random bewteen 0 and diff
-    const random = Math.round(diff * rand);
-    
-    const randInRange = random - min
-
-    return randInRange
+    //Math.random 0 (inclusive) → 1 (exclusive) something like 0.12
+    let random = Math.floor(Math.random() * (max - min + 1)) + min
+    return random
 }
 
 const seedDb = async() => {
     await School.deleteMany({})
     for(let i = 0; i < 50; i++) {
         const random = Math.floor(Math.random() * cities.length);
-        const price = getRandom(3000, 7000)
+        const price = getRandom(3000, 10000)
         const city = cities[random]
         const school = new School({
+            author: '69b29d7693665c061d8d7817',
             location: `${city.town}, ${city.district}`,
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
             image: `https://picsum.photos/400?random=${Math.random()}`,

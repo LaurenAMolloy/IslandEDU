@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
+const { validateReview } = require('../middleware')
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 
@@ -8,18 +8,6 @@ const School = require('../models/school');
 const Review = require('../models/review');
 
 const { reviewSchema } = require('../schemas.js');
-
-//Todo redirect the the form and show errors
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-
-     if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 //Reviews
 // POST /schools/:id/reviews

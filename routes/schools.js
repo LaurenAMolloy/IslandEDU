@@ -1,22 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const { schoolSchema } = require('../schemas');
-const ExpressError = require('../utils/ExpressError');
+
 const School = require('../models/school');
-const { isLoggedIn } = require('../middleware')
+const { isLoggedIn, isAuthor, validateSchool } = require('../middleware');
 
-const validateSchool = (req, res, next) => {
-    
-    const { error } = schoolSchema.validate(req.body);
-
-    if(error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 //GET all schools
 router.get("/", catchAsync(async (req, res) => {
@@ -39,6 +27,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.post('/', isLoggedIn, validateSchool, catchAsync(async(req, res, next) => {
     // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
     const school = new School(req.body.school);
+    school.author = req.user._id;
     await school.save();
     req.flash('success', 'Successfully made a new school');
     res.redirect(`/schools/${school._id}`);  
@@ -47,7 +36,8 @@ router.post('/', isLoggedIn, validateSchool, catchAsync(async(req, res, next) =>
 //GET school by id
 router.get('/:id', catchAsync(async(req, res) => {
     const { id } = req.params
-    const school = await School.findById(id).populate('reviews')
+    const school = await School.findById(id).populate('reviews').populate('author');
+    console.log(school)
     if(!school) {
         req.flash('error', 'Cannot find that school!' );
         return res.redirect('/schools');
@@ -56,18 +46,32 @@ router.get('/:id', catchAsync(async(req, res) => {
 }))
 
 //Update School by ID
-router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async(req, res) => {
     const { id } = req.params
     const school = await School.findById(id)
     if(!school){
         req.flash('error', 'Cannot find that campground!')
     }
+    //Are you allowed to update?
+    if(!school.author.equals(req.user._id)) {
+        req.flash('error', 'You Do Not Have Permission to do That!')
+        res.redirect(`/schools/${id}`)
+   }
     res.render('schools/edit', { school })
 }));
 
-router.put('/:id', isLoggedIn, validateSchool, catchAsync(async(req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validateSchool, catchAsync(async(req, res) => {
    const { id } = req.params;
-   const school = await School.findByIdAndUpdate(id, { ...req.body.school })
+   //Find the school
+   const school = await School.findbyId(id);
+   //Are you allowed to update?
+   if(!school.author.equals(req.user._id)) {
+        req.flash('error', 'You Do Not Have Permission to do That!')
+        res.redirect(`/schools/${id}`)
+   }
+   //This is not a good way to update!
+   //We have already found the campground so need to do this better
+   const schools = await School.findByIdAndUpdate(id, { ...req.body.school })
    req.flash('success', 'Successfully updated school');
    res.redirect(`/schools/${school._id}`)
 }))
