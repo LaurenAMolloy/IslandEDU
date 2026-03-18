@@ -91,6 +91,49 @@ This project is being developed with a product-focused approach:
 | Logout | POST | /api/logout |
 
 ---
+## 📁 Project Structure
+.
+├── app.js
+├── controllers
+│   ├── review.js
+│   ├── schools.js
+│   └── users.js
+├── middleware.js
+├── models
+│   ├── review.js
+│   ├── school.js
+│   └── user.js
+├── package-lock.json
+├── package.json
+├── public
+│   ├── javascripts
+│   └── styles
+├── routes
+│   ├── reviews.js
+│   ├── schools.js
+│   └── users.js
+├── schemas.js
+├── seeds
+│   ├── cities.js
+│   ├── index.js
+│   └── seedHelpers.js
+├── uploads
+│   ├── 6504635998a1b2fbecd7e32583c39a27
+│   ├── a669e2735729bac2987d789bc10d0db8
+│   ├── b27f91fb58f86d11f274661813213d04
+│   └── b997e45f87d22d1f52c6ac8a346d75c1
+├── utils
+│   ├── catchAsync.js
+│   └── ExpressError.js
+└── views
+    ├── error.ejs
+    ├── home.ejs
+    ├── layouts
+    ├── partials
+    ├── schools
+    └── users
+
+---
 
 ## 🚀 Future Improvements
 
