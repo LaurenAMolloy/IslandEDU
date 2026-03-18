@@ -1,7 +1,7 @@
 const { schoolSchema, reviewSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
-const school = require('./models/school');
-
+const School = require('./models/school');
+const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
     console.log("REQ.USER...", req.user)
@@ -39,6 +39,16 @@ module.exports.isAuthor = async(req, res, next) => {
     const school = await School.findById(id);
     //Does the authors id match the user id?
     if(!school.author.equals(req.user._id)) {
+        req.flash('error', 'You Do Not Have Permission to do That!')
+        res.redirect(`/schools/${id}`)
+   }
+   next()
+}
+module.exports.isReviewAuthor = async(req, res, next) => {
+    const { id, reviewId } = req.params;
+    const review = await Review.findById(reviewId);
+    //Does the authors id match the user id?
+    if(!review.author.equals(req.user._id)) {
         req.flash('error', 'You Do Not Have Permission to do That!')
         res.redirect(`/schools/${id}`)
    }

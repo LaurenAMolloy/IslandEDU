@@ -34,41 +34,51 @@
             </div>
         </div>
         <div class="col-6">
-            <h2>Leave a Review</h2>
-            <form action="/schools/<%=school._id %>/reviews" method="POST" class="validated-form mb-5" novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="range">Rating</label>
-                    <input class="form-range" type="range" min="1" max="5" id="range" name="review[rating]" required>
-                    <div class="invalid-feedback">
-                        Please write a review.
+            <% if(currentUser && school.author.equals(currentUser._id)) {%>
+                <h2>Leave a Review</h2>
+                <form action="/schools/<%=school._id %>/reviews" method="POST" class="validated-form mb-5" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="range">Rating</label>
+                        <input class="form-range" type="range" min="1" max="5" id="range" name="review[rating]"
+                            required>
+                        <div class="invalid-feedback">
+                            Please write a review.
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="body">Review</label>
-                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-                    <div class="invalid-feedback">
-                        Please write a review.
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Review</label>
+                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
+                            required></textarea>
+                        <div class="invalid-feedback">
+                            Please write a review.
+                        </div>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <button class="btn btn-success">Submit</button>
-            </form>
-            <% for(let review of school.reviews) { %>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Rating: <%= review.rating %>
-                        </h5>
-                        <p>
-                            Review: <%= review.body %>
-                        </p>
-                        <form action="/schools/<%=school._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </div>
-                </div>
+                    <button class="btn btn-success">Submit</button>
+                </form>
                 <% } %>
+                    <% for(let review of school.reviews) { %>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Rating: <%= review.rating %>
+                                </h5>
+                                <h6 class="card-subtitle">
+                                    By: <%= review.author.username %>
+                                </h6>
+                                <p>
+                                    Review: <%= review.body %>
+                                </p>
+                                <% if(currentUser && review.author.equals(currentUser._id)) {%>
+                                    <form action="/schools/<%=school._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                        method="POST">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% } %>
         </div>
     </div>
