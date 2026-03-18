@@ -92,6 +92,7 @@ This project is being developed with a product-focused approach:
 
 ---
 ## 📁 Project Structure
+```txt
 .
 ├── app.js
 ├── controllers
@@ -132,6 +133,7 @@ This project is being developed with a product-focused approach:
     ├── partials
     ├── schools
     └── users
+```
 
 ---
 
