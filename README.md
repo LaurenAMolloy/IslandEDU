@@ -55,10 +55,9 @@ This project is being developed with a product-focused approach:
 
 ## 🧱 Tech Stack
 
-### Frontend
-- React.js  
-- React Router  
-- Tailwind CSS  
+### Frontend (Server-rendered)
+- EJS (Embedded JavaScript Templates)
+- HTML, CSS  
 
 ### Backend
 - Node.js  
