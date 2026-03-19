@@ -11,11 +11,8 @@ const School = require('../models/school');
 //Fancy way to route
 router.route('/')
     .get(catchAsync(schools.index))
-    // .post(isLoggedIn, validateSchool, catchAsync(schools.createSchool))
-    .post(upload.single('image'),(req, res) => {
-        console.log(req.body, req.file);
-        res.send("IT WORKED");
-    });
+    .post(isLoggedIn, upload.array('image'), validateSchool, catchAsync(schools.createSchool))
+    
 
 router.get('/new', isLoggedIn, schools.newForm);
 
