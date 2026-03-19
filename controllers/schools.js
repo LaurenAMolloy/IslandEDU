@@ -52,16 +52,14 @@ module.exports.editSchoolForm = async(req, res) => {
 
 module.exports.updateSchool = async(req, res) => {
    const { id } = req.params;
-   //Find the school
-   const school = await School.findbyId(id);
-   //Are you allowed to update?
-   if(!school.author.equals(req.user._id)) {
-        req.flash('error', 'You Do Not Have Permission to do That!')
-        res.redirect(`/schools/${id}`)
-   }
    //This is not a good way to update!
    //We have already found the campground so need to do this better
-   const schools = await School.findByIdAndUpdate(id, { ...req.body.school })
+   const school = await School.findByIdAndUpdate(id, { ...req.body.school });
+   //Turn the images into an array
+   const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }))
+   //Push the images into the image array
+   school.image.push(...imgs);
+   await school.save();
    req.flash('success', 'Successfully updated school');
    res.redirect(`/schools/${school._id}`)
 }
