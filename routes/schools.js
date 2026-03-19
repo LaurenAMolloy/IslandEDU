@@ -18,7 +18,7 @@ router.get('/new', isLoggedIn, schools.newForm);
 
 router.route('/:id')
     .get(catchAsync(schools.showSchool))
-    .put(isLoggedIn, isAuthor, validateSchool, catchAsync(schools.updateSchool))
+    .put(isLoggedIn, isAuthor, upload.array('image'), validateSchool, catchAsync(schools.updateSchool))
     .delete(catchAsync(schools.deleteSchool));
 
 

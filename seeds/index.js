@@ -34,7 +34,17 @@ const seedDb = async() => {
             author: '69b29d7693665c061d8d7817',
             location: `${city.town}, ${city.district}`,
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
-            image: `https://picsum.photos/400?random=${Math.random()}`,
+            image: [
+                {
+                    url: 'https://res.cloudinary.com/dmlv4s1vi/image/upload/v1773920924/IslandEdu/o0o40yurb29hrqvvlrfe.jpg',
+                    filename: 'IslandEdu/o0o40yurb29hrqvvlrfe',
+                   
+                },
+                {
+                    url: 'https://res.cloudinary.com/dmlv4s1vi/image/upload/v1773920924/IslandEdu/p5astgsrrkh5rvn6orvy.jpg',
+                    filename: 'IslandEdu/p5astgsrrkh5rvn6orvy',
+                }
+            ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
         })
