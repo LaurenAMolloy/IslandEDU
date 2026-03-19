@@ -6,7 +6,12 @@ const Review = require('./review');
 const SchoolSchema = new Schema({
     title: String,
     price: Number,
-    image: String,
+    image: [
+        {
+        url: String,
+        filename: String
+        }
+    ],
     description: String,
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],

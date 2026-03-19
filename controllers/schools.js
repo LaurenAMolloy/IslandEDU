@@ -11,10 +11,11 @@ module.exports.newForm = (req, res) => {
 }
 
 module.exports.createSchool = async(req, res, next) => {
-    // if(!req.body.campground) throw new ExpressError('Invalid Data', 400);
     const school = new School(req.body.school);
+    school.image = req.files.map(file => ({ url: file.path, filename: file.filename }))
     school.author = req.user._id;
     await school.save();
+    console.log(school);
     req.flash('success', 'Successfully made a new school');
     res.redirect(`/schools/${school._id}`);  
 }
