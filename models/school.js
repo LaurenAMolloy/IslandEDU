@@ -3,15 +3,19 @@ const { schoolSchema } = require('../schemas');
 const Schema = mongoose.Schema;
 const Review = require('./review');
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_200,h_200,c_fill')
+});
+
 const SchoolSchema = new Schema({
     title: String,
     price: Number,
-    image: [
-        {
-        url: String,
-        filename: String
-        }
-    ],
+    image: [ ImageSchema ],
     description: String,
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],

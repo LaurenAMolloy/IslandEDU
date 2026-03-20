@@ -1,4 +1,5 @@
 const School = require('../models/school');
+const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
         console.log("Schools route hit");
@@ -52,6 +53,7 @@ module.exports.editSchoolForm = async(req, res) => {
 
 module.exports.updateSchool = async(req, res) => {
    const { id } = req.params;
+   console.log(req.body.deleteImages)
    //This is not a good way to update!
    //We have already found the campground so need to do this better
    const school = await School.findByIdAndUpdate(id, { ...req.body.school });
@@ -60,6 +62,16 @@ module.exports.updateSchool = async(req, res) => {
    //Push the images into the image array
    school.image.push(...imgs);
    await school.save();
+
+   //Handle Deletions
+   if(req.body.deleteImages){
+    //Delete from Cloudinary
+    for(let filename of req.body.deleteImages) {
+        await cloudinary.uploader.destroy(filename)
+    }
+    //Remove from DB
+     await school.updateOne({ $pull: {image: {filename: {$in: req.body.deleteImages}}}})
+   }
    req.flash('success', 'Successfully updated school');
    res.redirect(`/schools/${school._id}`)
 }
