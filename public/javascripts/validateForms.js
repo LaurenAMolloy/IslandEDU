@@ -2,6 +2,8 @@
                 (function() {
                     'use strict'
 
+                    bsCustomFileInput.init()
+
                     console.log("script running")
 
                     // Fetch all the forms we want to apply custom Bootstrap validation styles to

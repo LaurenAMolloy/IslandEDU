@@ -10,14 +10,18 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="location">Location</label>
+                <div class="mb-3 custom-file">
+                    <label class="form-label custom-file-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="school[location]" required>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
                 </div>
-                <input type="file" name="image" id="schoolImg" multiple>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Choose Image</label>
+                    <input class="form-control" type="file" id="formFile" id="image" name="image" multiple>
+                </div>
+                <!-- <input type="file" name="image" id="schoolImg" multiple> -->
                 <!-- <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
                     <input class="form-control" type="text" id="image" name="school[image]" required>
