@@ -8,9 +8,12 @@ const ImageSchema = new Schema({
     filename: String
 });
 
+//A property that doesn’t exist in MongoDB, but is generated dynamically from other data
 ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200,h_200,c_fill')
 });
+
+const opts = { toJSON: { virtuals: true } };
 
 const SchoolSchema = new Schema({
     title: String,
@@ -20,6 +23,17 @@ const SchoolSchema = new Schema({
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],
     // curriculum, enum: ["British", "IB","American", "Waldorf", "Montessori"]
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -30,6 +44,12 @@ const SchoolSchema = new Schema({
             ref: "Review"
         }
     ]
+}, opts);
+
+SchoolSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+    <strong><a href="/schools/${this._id}">${this.title}</a></strong>
+    <p>${this.description.substring(0, 20)}...</p>`
 });
 
 //WHATEVER IS DELETED WILL BE PASSED IN

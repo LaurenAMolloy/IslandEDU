@@ -33,6 +33,13 @@ const seedDb = async() => {
         const school = new School({
             author: '69b29d7693665c061d8d7817',
             location: `${city.town}, ${city.district}`,
+             geometry: {
+                type: "Point",
+                coordinates: [
+                    city.longitude,
+                    city.latitude,
+                ]
+            },
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
             image: [
                 {
@@ -47,6 +54,7 @@ const seedDb = async() => {
             ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
+
         })
         await school.save()
     }

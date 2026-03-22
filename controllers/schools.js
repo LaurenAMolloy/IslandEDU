@@ -1,5 +1,8 @@
 const School = require('../models/school');
 const { cloudinary } = require("../cloudinary");
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
+
 
 module.exports.index = async (req, res) => {
         console.log("Schools route hit");
@@ -12,7 +15,20 @@ module.exports.newForm = (req, res) => {
 }
 
 module.exports.createSchool = async(req, res, next) => {
+
+    const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
+    // console.log(geoData);
+    if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect('/schools/new');
+    }
+
     const school = new School(req.body.school);
+
+    school.geometry = geoData.features[0].geometry;
+    school.location = geoData.features[0].place_name;
+
+
     school.image = req.files.map(file => ({ url: file.path, filename: file.filename }))
     school.author = req.user._id;
     await school.save();
@@ -53,10 +69,22 @@ module.exports.editSchoolForm = async(req, res) => {
 
 module.exports.updateSchool = async(req, res) => {
    const { id } = req.params;
-   console.log(req.body.deleteImages)
+   
+   const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
+
+    // console.log(geoData);
+    if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect(`/campgrounds/${id}/edit`);
+    }
    //This is not a good way to update!
    //We have already found the campground so need to do this better
    const school = await School.findByIdAndUpdate(id, { ...req.body.school });
+
+    school.geometry = geoData.features[0].geometry;
+    school.location = geoData.features[0].place_name;
+
+
    //Turn the images into an array
    const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }))
    //Push the images into the image array
