@@ -44,7 +44,6 @@ body {
 }
 
 /* School icon */
-
 .fa-school {
     color: var(--white);
     width: 50px;
@@ -118,4 +117,9 @@ a {
 
 a:hover {
     color: #d96f3f;
+}
+
+#cluster-map {
+    width: 100%;
+    height: 500px;
 }

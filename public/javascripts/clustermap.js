@@ -1,10 +1,11 @@
 maptilersdk.config.apiKey = maptilerApiKey;
 
 const map = new maptilersdk.Map({
-    container: 'map',
+    container: 'cluster-map',
     style: maptilersdk.MapStyle.BRIGHT,
     center: [33.3823, 35.1856],
-    zoom: 8
+    zoom: 8,
+    navigationControl: true,
 });
 
 map.on('load', function () {
