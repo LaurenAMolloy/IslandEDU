@@ -1,17 +1,17 @@
 if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-
 //console.log(process.env.SECRET);
 
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const sanitizeV5 = require('./utils/mongoSanitizeV5.js');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -31,6 +31,7 @@ db.once("open", () => {
 });
 
 const app = express();
+app.set('query parser', 'extended');
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -42,7 +43,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(sanitizeV5({ replaceWith: '_' }));
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
@@ -66,7 +67,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-    console.log(req.session)
+    //console.log(req.session)
+    console.log(req.query)
     res.locals.currentUser = req.user
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

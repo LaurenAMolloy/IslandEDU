@@ -123,9 +123,10 @@
                         <% } %>
         </div>
     </div>
-    <%-"<script>"%>
-        const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
-            const campground = <%- JSON.stringify(campground) %>;
-                <%-"< /script>"%>
 
-                    <script src="/javascripts/showPageMap.js"></script>
+    <script>
+        const maptilerApiKey = '<%= process.env.MAPTILER_API_KEY %>';
+        const school = '<%- JSON.stringify(school) %>';
+    </script>
+
+    <script src="/javascripts/showPageMap.js"></script>
