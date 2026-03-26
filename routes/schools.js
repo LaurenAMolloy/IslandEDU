@@ -8,10 +8,11 @@ const { storage } = require('../cloudinary');
 const upload = multer({ storage });
 const School = require('../models/school');
 
+//isLoggedIn
 //Fancy way to route
 router.route('/')
     .get(catchAsync(schools.index))
-    .post(isLoggedIn, upload.array('image'), validateSchool, catchAsync(schools.createSchool))
+    .post(upload.array('image'), validateSchool, catchAsync(schools.createSchool))
     
 
 router.get('/new', isLoggedIn, schools.newForm);
