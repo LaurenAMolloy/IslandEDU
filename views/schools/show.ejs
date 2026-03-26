@@ -56,6 +56,7 @@
         <div class="col-6">
 
             <div id="map" style="width: 100%; height: 300px;"></div>
+
             <% if(currentUser && school.author.equals(currentUser._id)) {%>
                 <h2>Leave a Review</h2>
                 <form action="/schools/<%=school._id %>/reviews" method="POST" class="validated-form mb-5" novalidate>
@@ -123,10 +124,9 @@
                         <% } %>
         </div>
     </div>
+    <%-"<script>"%>
+        const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+            const school = <%- JSON.stringify(school) %>;
+                <%-"< /script>"%>
 
-    <script>
-        const maptilerApiKey = '<%= process.env.MAPTILER_API_KEY %>';
-        const school = '<%- JSON.stringify(school) %>';
-    </script>
-
-    <script src="/javascripts/showPageMap.js"></script>
+                    <script src="/javascripts/showPageMap.js"></script>

@@ -1,17 +1,18 @@
 if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
+
 //console.log(process.env.SECRET);
 
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const sanitizeV5 = require('./utils/mongoSanitizeV5.js');
+const helmet = require('helmet');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -19,10 +20,14 @@ const User = require('./models/user.js');
 
 const userRoutes = require('./routes/users')
 const schoolsRoutes = require('./routes/schools');
-const reviewsRoutes = require('./routes/reviews')
+const reviewsRoutes = require('./routes/reviews');
+const session = require('express-session');
+
+//const dbUrl = process.env.DB_URL
+const dbUrl = 'mongodb://localhost:27017/island-edu'
 
 //Connect to Mongo
-mongoose.connect('mongodb://localhost:27017/island-edu');
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -45,23 +50,99 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
+
+const { MongoStore } = require('connect-mongo');
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    //Lazy update the session
+    //If the data has not changed do not update
+    //Only once every 24 hrs
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+
+store.on("error", function(e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
 const sessionConfig = {
+    store,
+    name: 'session',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
+    //Cookie not accessible via JS
     cookie: {
         httpOnly: true,
+        //secure: true
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 
 app.use(session(sessionConfig));
+app.use(flash());
+app.use(helmet());
+
+const scriptSrcUrls = [
+  "https://stackpath.bootstrapcdn.com/",
+  "https://kit.fontawesome.com/",
+  "https://cdnjs.cloudflare.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://cdn.maptiler.com/",
+];
+const styleSrcUrls = [
+  "https://kit-free.fontawesome.com/",
+  "https://stackpath.bootstrapcdn.com/",
+  "https://fonts.googleapis.com/",
+  "https://use.fontawesome.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://cdn.maptiler.com/",
+  "https://cdnjs.cloudflare.com/"
+];
+const connectSrcUrls = [
+    "https://api.maptiler.com/", 
+    "https://cdn.maptiler.com/",
+    "https://cdn.jsdelivr.net/"
+];
+const fontSrcUrls = [
+    "https://fonts.gstatic.com/",
+  "https://cdn.jsdelivr.net/",
+  "https://cdnjs.cloudflare.com/",
+  "https://use.fontawesome.com/",
+  "https://cdn.maptiler.com/"
+];
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        "https://res.cloudinary.com/dmlv4s1vi/",
+        "https://images.unsplash.com/",
+        "https://api.maptiler.com/",
+        "https://cdn.maptiler.com/"
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
+  })
+);
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
-app.use(flash());
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

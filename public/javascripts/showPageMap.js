@@ -1,4 +1,5 @@
 maptilersdk.config.apiKey = maptilerApiKey;
+//console.log(school);
 
 const map = new maptilersdk.Map({
     container: 'map',

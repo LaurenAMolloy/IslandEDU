@@ -9,12 +9,14 @@
 
         <div class="row g-4">
             <% for(let school of schools) { %>
+
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm border-0">
 
                         <!-- Image -->
                         <div class="ratio ratio-4x3">
-                            <img src="<%=school.image[0].url %>" class="card-img-top object-fit-cover" alt="">
+                            <img src="<%= (school.image && school.image.length) ? school.image[0].url : '/default.jpg' %>"
+                                class="card-img-top object-fit-cover" alt="">
                         </div>
 
                         <!-- Body -->

@@ -7,6 +7,7 @@ maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 module.exports.index = async (req, res) => {
         console.log("Schools route hit");
         const schools = await School.find({})
+        console.log(schools);
         res.render('schools/index', {schools, location: "All"})
 }
 
@@ -75,7 +76,7 @@ module.exports.updateSchool = async(req, res) => {
     // console.log(geoData);
     if (!geoData.features?.length) {
         req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
-        return res.redirect(`/campgrounds/${id}/edit`);
+        return res.redirect(`/schools/${id}/edit`);
     }
    //This is not a good way to update!
    //We have already found the campground so need to do this better
@@ -83,7 +84,6 @@ module.exports.updateSchool = async(req, res) => {
 
     school.geometry = geoData.features[0].geometry;
     school.location = geoData.features[0].place_name;
-
 
    //Turn the images into an array
    const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }))
