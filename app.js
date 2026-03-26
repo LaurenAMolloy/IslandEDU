@@ -69,7 +69,7 @@ store.on("error", function(e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: process.env.SECRET || 'notagoodsecret',
+    secret,
     resave: false,
     saveUninitialized: false,
     //Cookie not accessible via JS
