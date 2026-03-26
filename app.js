@@ -53,13 +53,11 @@ const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
+    crypto: { secret },
     //Lazy update the session
     //If the data has not changed do not update
     //Only once every 24 hrs
     touchAfter: 24 * 60 * 60,
-    crypto: {
-        secret: 'thisshouldbeabettersecret!'
-    }
 });
 
 store.on("error", function(e) {
@@ -75,7 +73,7 @@ const sessionConfig = {
     //Cookie not accessible via JS
     cookie: {
         httpOnly: true,
-        secure: true,
+        //secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
