@@ -2,8 +2,6 @@ if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-//console.log(process.env.SECRET);
-
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -13,15 +11,15 @@ const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const sanitizeV5 = require('./utils/mongoSanitizeV5.js');
 const helmet = require('helmet');
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user.js');
-
 const userRoutes = require('./routes/users')
 const schoolsRoutes = require('./routes/schools');
 const reviewsRoutes = require('./routes/reviews');
 const session = require('express-session');
+
+const { MongoStore } = require('connect-mongo');
 
 //const dbUrl = process.env.DB_URL
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/island-edu';
@@ -36,7 +34,6 @@ db.once("open", () => {
 });
 
 const app = express();
-app.set('query parser', 'extended');
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -44,12 +41,15 @@ app.set('view engine', 'ejs');
 //builds safely
 //bullet proof path
 app.set('views', path.join(__dirname, 'views'));
+app.set('query parser', 'extended');
+app.set('trust proxy', 1);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 const { MongoStore } = require('connect-mongo');
 
@@ -71,9 +71,9 @@ store.on("error", function(e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: process.env.SECRET || 'notagoodsecret'
+    secret: process.env.SECRET || 'notagoodsecret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     //Cookie not accessible via JS
     cookie: {
         httpOnly: true,
@@ -154,14 +154,7 @@ app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
-})
-
-app.get('/fakeuser',  async (req, res) => {
-    const user = new User({ email: 'lauren@gmail.com', username: 'lauren' })
-    //PASS IN USER AND PASSWORD
-    const newUser = await User.register(user, 'chicken');
-    res.send(newUser);
-})
+});
 
 app.use('/', userRoutes)
 app.use('/schools', schoolsRoutes );
@@ -186,6 +179,8 @@ app.use((err, req, res, next ) => {
     //res.send("Oh boy something went wrong!")
 })
 
-app.listen(8000, ()=> {
-    console.log("Listening on Port 8000")
-})
+const port = process.env.PORT || 8000;
+
+app.listen(port, ()=> {
+    console.log(`Listening on port ${port}`);
+});
