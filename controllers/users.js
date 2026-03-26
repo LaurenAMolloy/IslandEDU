@@ -31,7 +31,7 @@ module.exports.login = (req, res) => {
     req.flash('success', 'welcome back!');
     const redirectUrl = res.locals.returnTo || '/schools'
     delete req.session.returnTo
-    res.redirect('/schools');
+    res.redirect(redirectUrl);
 }
 
 module.exports.logout = (req, res, next) => {

@@ -12,7 +12,7 @@ const School = require('../models/school');
 //Fancy way to route
 router.route('/')
     .get(catchAsync(schools.index))
-    .post(upload.array('image'), validateSchool, catchAsync(schools.createSchool))
+    .post(isLoggedIn, upload.array('image'), validateSchool, catchAsync(schools.createSchool))
     
 
 router.get('/new', isLoggedIn, schools.newForm);

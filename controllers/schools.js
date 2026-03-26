@@ -16,6 +16,8 @@ module.exports.newForm = (req, res) => {
 }
 
 module.exports.createSchool = async(req, res, next) => {
+    console.log("USER:", req.user);
+    console.log("SESSION:", req.session);
 
     const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
     // console.log(geoData);
