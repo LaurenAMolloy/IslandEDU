@@ -24,7 +24,7 @@ const reviewsRoutes = require('./routes/reviews');
 const session = require('express-session');
 
 //const dbUrl = process.env.DB_URL
-const dbUrl = 'mongodb://localhost:27017/island-edu'
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/island-edu';
 
 //Connect to Mongo
 mongoose.connect(dbUrl);
