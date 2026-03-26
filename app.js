@@ -51,8 +51,6 @@ app.use(sanitizeV5({ replaceWith: '_' }));
 
 const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
-const { MongoStore } = require('connect-mongo');
-
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     //Lazy update the session
