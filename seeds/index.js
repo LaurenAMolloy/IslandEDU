@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const School = require('../models/school');
 const { schoolPrefixes, schoolConcepts, schoolTypes } = require('./seedHelpers')
-const cities = require('./cities')
+const cities = require('./cities');
+const User = require('../models/user');
 
 //Connect to Mongo
 mongoose.connect('mongodb://localhost:27017/island-edu', {
@@ -31,7 +32,7 @@ const seedDb = async() => {
         const price = getRandom(3000, 10000)
         const city = cities[random]
         const school = new School({
-            author: '69b29d7693665c061d8d7817',
+            author: '69c6652fcae79d86b9be0238',
             location: `${city.town}, ${city.district}`,
              geometry: {
                 type: "Point",
@@ -43,12 +44,12 @@ const seedDb = async() => {
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
             image: [
                 {
-                    url: 'https://res.cloudinary.com/dmlv4s1vi/image/upload/v1773920924/IslandEdu/o0o40yurb29hrqvvlrfe.jpg',
+                    url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
                     filename: 'IslandEdu/o0o40yurb29hrqvvlrfe',
                    
                 },
                 {
-                    url: 'https://res.cloudinary.com/dmlv4s1vi/image/upload/v1773920924/IslandEdu/p5astgsrrkh5rvn6orvy.jpg',
+                    url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
                     filename: 'IslandEdu/p5astgsrrkh5rvn6orvy',
                 }
             ],
