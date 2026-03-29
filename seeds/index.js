@@ -32,27 +32,28 @@ const seedDb = async() => {
         const price = getRandom(3000, 10000)
         const city = cities[random]
         const school = new School({
-            author: '69c6652fcae79d86b9be0238',
+            author: '69c6b5274a16f68ac4abc5a4',
             location: `${city.town}, ${city.district}`,
-             geometry: {
-                type: "Point",
-                coordinates: [
-                    city.longitude,
-                    city.latitude,
-                ]
-            },
+            //  geometry: {
+            //     type: "Point",
+            //     coordinates: [
+            //         city.longitude,
+            //         city.latitude,
+            //     ]
+            // },
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
-            image: [
-                {
-                    url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-                    filename: 'IslandEdu/o0o40yurb29hrqvvlrfe',
+            image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+            // image: [
+            //     {
+            //         url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+            //         //filename: 'IslandEdu/o0o40yurb29hrqvvlrfe',
                    
-                },
-                {
-                    url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-                    filename: 'IslandEdu/p5astgsrrkh5rvn6orvy',
-                }
-            ],
+            //     },
+            //     {
+            //         url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+            //         //filename: 'IslandEdu/p5astgsrrkh5rvn6orvy',
+            //     }
+            // ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
 

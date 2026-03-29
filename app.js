@@ -24,10 +24,9 @@ const reviewsRoutes = require('./routes/reviews');
 const session = require('express-session');
 
 //const dbUrl = process.env.DB_URL
-const dbUrl = 'mongodb://localhost:27017/island-edu'
 
 //Connect to Mongo
-mongoose.connect(dbUrl);
+mongoose.connect('mongodb://localhost:27017/island-edu');
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -51,25 +50,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
 
-const { MongoStore } = require('connect-mongo');
+//const { MongoStore } = require('connect-mongo');
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    //Lazy update the session
-    //If the data has not changed do not update
-    //Only once every 24 hrs
-    touchAfter: 24 * 60 * 60,
-    crypto: {
-        secret: 'thisshouldbeabettersecret!'
-    }
-});
+// const store = MongoStore.create({
+//     mongoUrl: dbUrl,
+//     //Lazy update the session
+//     //If the data has not changed do not update
+//     //Only once every 24 hrs
+//     touchAfter: 24 * 60 * 60,
+//     crypto: {
+//         secret: 'thisshouldbeabettersecret!'
+//     }
+// });
 
-store.on("error", function(e) {
-    console.log("SESSION STORE ERROR", e)
-})
+// store.on("error", function(e) {
+//     console.log("SESSION STORE ERROR", e)
+// })
 
 const sessionConfig = {
-    store,
+    //store,
     name: 'session',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
@@ -149,7 +148,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     //console.log(req.session)
-    console.log(req.query)
+    //console.log(req.query)
     res.locals.currentUser = req.user
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -180,6 +179,7 @@ app.all(/(.*)/, (req, res, next) => {
 
 //I only run when there is an error!
 app.use((err, req, res, next ) => {
+    console.log(err); 
     const { statusCode = 500 } = err;
     if(!err.message) err.message = "Oh No, Something Went Wrong!"
     res.status(statusCode).render('error', { err });

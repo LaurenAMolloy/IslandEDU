@@ -1,8 +1,8 @@
 const School = require('../models/school');
 const { cloudinary } = require("../cloudinary");
-const maptilerClient = require("@maptiler/client");
-maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
-
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geoCoder = mbxGeocoding({accessToken: mapBoxToken})
 
 module.exports.index = async (req, res) => {
         console.log("Schools route hit");
@@ -17,22 +17,16 @@ module.exports.newForm = (req, res) => {
 
 module.exports.createSchool = async(req, res, next) => {
     console.log("USER:", req.user);
-    console.log("SESSION:", req.session);
+    // console.log("SESSION:", req.session);
 
-    const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
-    // console.log(geoData);
-    if (!geoData.features?.length) {
-        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
-        return res.redirect('/schools/new');
-    }
-
+    // const geoData = await geoCoder.forwardGeocode({
+    //     query: req.body.school.location,
+    //     limit: 1
+    // }).send();
+    // console.log(geoData.body.features);
+    // res.send("OK!")
     const school = new School(req.body.school);
-
-    school.geometry = geoData.features[0].geometry;
-    school.location = geoData.features[0].place_name;
-
-
-    school.image = req.files.map(file => ({ url: file.path, filename: file.filename }))
+    //school.image = req.files.map(file => ({ url: file.path, filename: file.filename }))
     school.author = req.user._id;
     await school.save();
     console.log(school);
