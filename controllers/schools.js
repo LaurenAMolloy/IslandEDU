@@ -68,24 +68,24 @@ module.exports.editSchoolForm = async(req, res) => {
 module.exports.updateSchool = async(req, res) => {
    const { id } = req.params;
    
-   const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
+   //const geoData = await maptilerClient.geocoding.forward(req.body.school.location, { limit: 1 });
 
     // console.log(geoData);
-    if (!geoData.features?.length) {
-        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
-        return res.redirect(`/schools/${id}/edit`);
-    }
+    // if (!geoData.features?.length) {
+    //     req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+    //     return res.redirect(`/schools/${id}/edit`);
+    // }
    //This is not a good way to update!
    //We have already found the campground so need to do this better
    const school = await School.findByIdAndUpdate(id, { ...req.body.school });
 
-    school.geometry = geoData.features[0].geometry;
-    school.location = geoData.features[0].place_name;
+    // school.geometry = geoData.features[0].geometry;
+    // school.location = geoData.features[0].place_name;
 
    //Turn the images into an array
    const imgs = req.files.map(file => ({ url: file.path, filename: file.filename }))
    //Push the images into the image array
-   school.image.push(...imgs);
+   school.images.push(...imgs);
    await school.save();
 
    //Handle Deletions

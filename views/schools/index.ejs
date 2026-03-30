@@ -13,14 +13,11 @@
                     <div class="card h-100 shadow-sm border-0">
 
                         <!-- Image -->
-                        <!-- <div class="ratio ratio-4x3">
-                            <img src="<%= (school.image && school.image.length) ? school.image[0].url : '/default.jpg' %>"
-                                class="card-img-top object-fit-cover" alt="">
-                        </div> -->
                         <div class="ratio ratio-4x3">
-                            <img src="<%= school.image || '/default.jpg' %>" class="card-img-top object-fit-cover"
-                                alt="">
+                            <img src="<%= (school.images && school.images.length) ? school.images[0].url : '/default.jpg' %>"
+                                class="card-img-top object-fit-cover" alt="">
                         </div>
+
 
                         <!-- Body -->
                         <div class="card-body d-flex flex-column">

@@ -42,18 +42,15 @@ const seedDb = async() => {
             //     ]
             // },
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
-            image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-            // image: [
-            //     {
-            //         url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-            //         //filename: 'IslandEdu/o0o40yurb29hrqvvlrfe',
-                   
-            //     },
-            //     {
-            //         url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-            //         //filename: 'IslandEdu/p5astgsrrkh5rvn6orvy',
-            //     }
-            // ],
+            images: [
+            {
+            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774851692/IslandEdu/csepkjqgjkhhva03icee.jpg',
+            filename: 'IslandEdu/csepkjqgjkhhva03icee',
+            },
+            {
+            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774851693/IslandEdu/skbsjq2qurhnzv0z6qag.jpg',
+             filename: 'IslandEdu/skbsjq2qurhnzv0z6qag',            }
+            ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
 
