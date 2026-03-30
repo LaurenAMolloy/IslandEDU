@@ -32,7 +32,7 @@ const seedDb = async() => {
         const price = getRandom(3000, 10000)
         const city = cities[random]
         const school = new School({
-            author: '69c6b5274a16f68ac4abc5a4',
+            author: '69ca3b6bb9217d93abfba532',
             location: `${city.town}, ${city.district}`,
             //  geometry: {
             //     type: "Point",
@@ -44,8 +44,8 @@ const seedDb = async() => {
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
             images: [
             {
-            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774851692/IslandEdu/csepkjqgjkhhva03icee.jpg',
-            filename: 'IslandEdu/csepkjqgjkhhva03icee',
+            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774860228/IslandEdu/niyrnjfgjvlbzuv6ifp3.jpg',
+            filename: 'IslandEdu/niyrnjfgjvlbzuv6ifp3',
             },
             {
             url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774851693/IslandEdu/skbsjq2qurhnzv0z6qag.jpg',

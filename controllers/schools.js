@@ -95,7 +95,7 @@ module.exports.updateSchool = async(req, res) => {
         await cloudinary.uploader.destroy(filename)
     }
     //Remove from DB
-     await school.updateOne({ $pull: {image: {filename: {$in: req.body.deleteImages}}}})
+     await school.updateOne({ $pull: {images: {filename: {$in: req.body.deleteImages}}}})
    }
    req.flash('success', 'Successfully updated school');
    res.redirect(`/schools/${school._id}`)

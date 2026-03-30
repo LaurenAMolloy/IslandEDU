@@ -31,7 +31,7 @@ module.exports.schoolSchema = Joi.object({
             location: Joi.string().required().escapeHTML(),
             description: Joi.string().required().escapeHTML(),
         }).required(),
-        //deleteImages: Joi.array()
+        deleteImages: Joi.array()
     });
 
 module.exports.reviewSchema = Joi.object({
