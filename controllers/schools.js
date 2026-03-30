@@ -19,13 +19,17 @@ module.exports.createSchool = async(req, res, next) => {
     console.log("USER:", req.user);
     // console.log("SESSION:", req.session);
 
-    // const geoData = await geoCoder.forwardGeocode({
-    //     query: req.body.school.location,
-    //     limit: 1
-    // }).send();
+    const geoData = await geoCoder.forwardGeocode({
+        query: req.body.school.location,
+        limit: 1
+    }).send();
+
     // console.log(geoData.body.features);
     // res.send("OK!")
+
     const school = new School(req.body.school);
+    school.geometry = geoData.body.features[0].geometry
+
     //This will make an array that includes objects with all the files and urls
     school.images = req.files.map(file => ({ url: file.path, filename: file.filename }))
     school.author = req.user._id;
