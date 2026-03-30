@@ -1,5 +1,8 @@
 if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
+    console.log('Cloud Name:', process.env.CLOUDINARY_CLOUD_NAME);
+    console.log('API Key:', process.env.CLOUDINARY_KEY);
+    console.log('Secret loaded:', process.env.CLOUDINARY_SECRET ? 'Yes' : 'No');
 }
 
 //console.log(process.env.SECRET);
@@ -127,7 +130,7 @@ app.use(
         "'self'",
         "blob:",
         "data:",
-        "https://res.cloudinary.com/dmlv4s1vi/",
+        "https://res.cloudinary.com/du8pswahs/",
         "https://images.unsplash.com/",
         "https://api.maptiler.com/",
         "https://cdn.maptiler.com/"

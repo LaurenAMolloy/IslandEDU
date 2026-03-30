@@ -26,7 +26,8 @@ module.exports.createSchool = async(req, res, next) => {
     // console.log(geoData.body.features);
     // res.send("OK!")
     const school = new School(req.body.school);
-    //school.image = req.files.map(file => ({ url: file.path, filename: file.filename }))
+    //This will make an array that includes objects with all the files and urls
+    school.images = req.files.map(file => ({ url: file.path, filename: file.filename }))
     school.author = req.user._id;
     await school.save();
     console.log(school);

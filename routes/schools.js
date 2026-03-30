@@ -12,8 +12,9 @@ const School = require('../models/school');
 //Fancy way to route
 router.route('/')
     .get(catchAsync(schools.index))
+    //Image is looking for the form data with the field of data
     .post(isLoggedIn, upload.array('image'), validateSchool, catchAsync(schools.createSchool))
-    
+   
 
 router.get('/new', isLoggedIn, schools.newForm);
 

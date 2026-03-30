@@ -18,7 +18,12 @@ const opts = { toJSON: { virtuals: true } };
 const SchoolSchema = new Schema({
     title: String,
     price: Number,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ],
     description: String,
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],
