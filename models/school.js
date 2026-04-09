@@ -23,17 +23,17 @@ const SchoolSchema = new Schema({
     location: String,
     // educationLevel, enum: ["nursery", "primary","secondary"],
     // curriculum, enum: ["British", "IB","American", "Waldorf", "Montessori"]
-    geometry: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
-    },
+    // geometry: {
+    //     type: {
+    //         type: String,
+    //         enum: ['Point'],
+    //         required: true
+    //     },
+    //     coordinates: {
+    //         type: [Number],
+    //         required: true
+    //     }
+    // },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'

@@ -34,22 +34,16 @@ const seedDb = async() => {
         const school = new School({
             author: '69ca3b6bb9217d93abfba532',
             location: `${city.town}, ${city.district}`,
-            //  geometry: {
-            //     type: "Point",
-            //     coordinates: [
-            //         city.longitude,
-            //         city.latitude,
-            //     ]
-            // },
             title: `${sample(schoolPrefixes)} ${sample(schoolConcepts)} ${sample(schoolTypes)}`,
             images: [
             {
-            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774860228/IslandEdu/niyrnjfgjvlbzuv6ifp3.jpg',
-            filename: 'IslandEdu/niyrnjfgjvlbzuv6ifp3',
+            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1775752477/IslandEdu/nxol6uyjqeyspvzctwcz.jpg',
+            filename: 'IslandEdu/nxol6uyjqeyspvzctwcz',
             },
             {
-            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1774851693/IslandEdu/skbsjq2qurhnzv0z6qag.jpg',
-             filename: 'IslandEdu/skbsjq2qurhnzv0z6qag',            }
+            url: 'https://res.cloudinary.com/du8pswahs/image/upload/v1775752483/IslandEdu/ullgxjtla04aav4tt6ie.jpg',
+             filename: 'IslandEdu/ullgxjtla04aav4tt6ie',            
+            }
             ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
