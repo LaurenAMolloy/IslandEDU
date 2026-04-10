@@ -47,7 +47,10 @@ const seedDb = async() => {
             ],
             description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis quibusdam quo eligendi ab harum, officia consequuntur expedita ipsam amet tempora adipisci neque at animi, cupiditate fuga. Recusandae eius consequatur aspernatur.',
             price: price,
-
+            geometry: { 
+                type: 'Point', 
+                coordinates: [ 32.421844, 34.77533 ] 
+            },
         })
         await school.save()
     }
