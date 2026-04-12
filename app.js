@@ -2,6 +2,7 @@ if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -21,10 +22,11 @@ const schoolsRoutes = require('./routes/schools');
 const reviewsRoutes = require('./routes/reviews');
 const session = require('express-session');
 
-//const dbUrl = process.env.DB_URL
+//const dbUrl = process.env.DB_URL;
+const dbUrl = 'mongodb://localhost:27017/island-edu'
 
 //Connect to Mongo
-mongoose.connect('mongodb://localhost:27017/island-edu');
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -48,25 +50,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
 
-//const { MongoStore } = require('connect-mongo');
+const { MongoStore } = require('connect-mongo');
 
-// const store = MongoStore.create({
-//     mongoUrl: dbUrl,
-//     //Lazy update the session
-//     //If the data has not changed do not update
-//     //Only once every 24 hrs
-//     touchAfter: 24 * 60 * 60,
-//     crypto: {
-//         secret: 'thisshouldbeabettersecret!'
-//     }
-// });
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    //Lazy update the session
+    //If the data has not changed do not update
+    //Only once every 24 hrs
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
 
-// store.on("error", function(e) {
-//     console.log("SESSION STORE ERROR", e)
-// })
+store.on("error", function(e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
-    //store,
+    store,
     name: 'session',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
