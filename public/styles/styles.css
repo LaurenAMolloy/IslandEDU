@@ -119,7 +119,11 @@ a:hover {
     color: #d96f3f;
 }
 
-#cluster-map {
+#clustermap {
     width: 100%;
     height: 500px;
+}
+#map {
+    width: 100%;
+    height: 300px;
 }
