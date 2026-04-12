@@ -1,11 +1,6 @@
 if(process.env.NODE_ENV !== "production") {
     require('dotenv').config();
-    console.log('Cloud Name:', process.env.CLOUDINARY_CLOUD_NAME);
-    console.log('API Key:', process.env.CLOUDINARY_KEY);
-    console.log('Secret loaded:', process.env.CLOUDINARY_SECRET ? 'Yes' : 'No');
 }
-
-//console.log(process.env.SECRET);
 
 const express = require('express');
 const path = require('path');
@@ -109,6 +104,7 @@ const connectSrcUrls = [
     "https://cdn.jsdelivr.net/",
     "https://api.mapbox.com/",
     "https://events.mapbox.com/",
+    "https://docs.mapbox.com"
 ];
 const fontSrcUrls = [
     "https://fonts.gstatic.com/",

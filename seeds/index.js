@@ -27,7 +27,7 @@ function getRandom(min, max) {
 
 const seedDb = async() => {
     await School.deleteMany({})
-    for(let i = 0; i < 50; i++) {
+    for(let i = 0; i < 200; i++) {
         const random = Math.floor(Math.random() * cities.length);
         const price = getRandom(3000, 10000)
         const city = cities[random]
@@ -49,7 +49,10 @@ const seedDb = async() => {
             price: price,
             geometry: { 
                 type: 'Point', 
-                coordinates: [ 32.421844, 34.77533 ] 
+                coordinates: [
+                    city.longitude,
+                    city.latitude,
+                ] 
             },
         })
         await school.save()

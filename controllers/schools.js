@@ -5,9 +5,9 @@ const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geoCoder = mbxGeocoding({accessToken: mapBoxToken})
 
 module.exports.index = async (req, res) => {
-        console.log("Schools route hit");
+        //console.log("Schools route hit");
         const schools = await School.find({})
-        console.log(schools);
+        //console.log(schools);
         res.render('schools/index', {schools, location: "All"})
 }
 
@@ -28,7 +28,7 @@ module.exports.createSchool = async(req, res, next) => {
     // res.send("OK!")
 
     const school = new School(req.body.school);
-    school.geometry = geoData.body.features[0].geometry
+    school.geometry = geoData.body.features[0].geometry;
 
     //This will make an array that includes objects with all the files and urls
     school.images = req.files.map(file => ({ url: file.path, filename: file.filename }))

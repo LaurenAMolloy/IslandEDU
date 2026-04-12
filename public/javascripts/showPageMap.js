@@ -10,6 +10,12 @@
 
         const marker = new mapboxgl.Marker()
         .setLngLat(school.geometry.coordinates,)
+        .setPopup(
+            new mapboxgl.Popup({offset: 25})
+            .setHTML(
+                `<h3>${school.title}</h3><p>${school.location}</p>`
+            )
+        )
         .addTo(map)
 
         map.addControl(new mapboxgl.NavigationControl());

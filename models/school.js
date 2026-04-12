@@ -46,6 +46,10 @@ const SchoolSchema = new Schema({
     ]
 }, opts);
 
+// SchoolSchema.virtual('properties.popUpMarkup').get(function() {
+//     return "I am pop up text"
+// });
+
 SchoolSchema.virtual('properties.popUpMarkup').get(function () {
     return `
     <strong><a href="/schools/${this._id}">${this.title}</a></strong>
