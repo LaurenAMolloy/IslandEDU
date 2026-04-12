@@ -98,6 +98,24 @@ body {
     color: var(--white);
 }
 
+/* All buttons fully rounded */
+.btn {
+    border-radius: 50px;
+}
+
+/* Back button custom style */
+.btn-back {
+    background-color: var(--light-sea-green);
+    color: var(--blue-slate);
+    border-color: var(--light-sea-green);
+}
+
+.btn-back:hover {
+    background-color: #25a99c; /* Slightly darker light-sea-green */
+    border-color: #25a99c;
+    color: var(--blue-slate);
+}
+
 .btn-outline-secondary {
     color: var(--blue-slate);
     border-color: var(--blue-slate);
